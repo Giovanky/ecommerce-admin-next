@@ -11,6 +11,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toast } from 'react-hot-toast'
+import { useParams, useRouter } from 'next/navigation'
+import axios from 'axios'
 
 interface SettingsFormProps {
     initialData: Store
@@ -25,11 +28,22 @@ type SettingsFormValues = z.infer<typeof formSchema>
 export const SettingsForm: React.FC<SettingsFormProps> = ({
     initialData
 }) => {
+    const params = useParams()
+    const router = useRouter()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const onSubmit = async(data: SettingsFormValues) => {
-        console.log(data)
+        try{
+            setLoading(true)
+            await axios.patch(`/api/stores/${params.storeId}`, data)
+            router.refresh()
+            toast.success('Store updated')
+        }catch(err){
+            toast.error('Something went wrong')
+        }finally{
+            setLoading(false)
+        }
     }
 
     const form = useForm<SettingsFormValues>({
