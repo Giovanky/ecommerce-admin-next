@@ -13,6 +13,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { toast } from 'react-hot-toast'
 import { useParams, useRouter } from 'next/navigation'
+import { AlertModal } from '@/components/modals/alertModal'
+import { ApiAlert } from '@/components/ui/apiAlert'
 import axios from 'axios'
 
 interface SettingsFormProps {
@@ -46,6 +48,21 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
         }
     }
 
+    const onDelete = async() => {
+        try{
+            setLoading(true)
+            await axios.delete(`/api/stores/${params.storeId}`)
+            router.refresh()
+            router.push('/')
+            toast.success('Store delete')
+        }catch(err) {
+            toast.error('Make sure you removed all products and categories first')
+        }finally{
+            setLoading(false)
+            setOpen(false)
+        }
+    }
+
     const form = useForm<SettingsFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData
@@ -53,6 +70,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 
     return (
         <>
+            <AlertModal isOpen={open} onClose={() => setOpen(false)} 
+            onConfirm={onDelete} loading={loading} />
             <div className="flex items-center justify-between">
                 <Heading title="Settings" description="Manage store preferences" />
                 <Button disabled={loading} variant="destructive" size="icon" 
@@ -80,6 +99,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                     </Button>
                 </form>
             </Form>
+            <Separator />
+            <ApiAlert title="test" description="test-desc" />
         </>
     )
 }
