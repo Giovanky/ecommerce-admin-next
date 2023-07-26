@@ -16,6 +16,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/modals/alertModal'
 import { ApiAlert } from '@/components/ui/apiAlert'
 import axios from 'axios'
+import { useOrigin } from '@/hooks/useOrigin'
 
 interface SettingsFormProps {
     initialData: Store
@@ -32,6 +33,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 }) => {
     const params = useParams()
     const router = useRouter()
+    const origin = useOrigin()
+
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -100,7 +103,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                 </form>
             </Form>
             <Separator />
-            <ApiAlert title="test" description="test-desc" />
+            <ApiAlert title="NEXT_PUBLIC_API_URL" 
+                description={`${origin}/api/${params.storeId}`} 
+                variant="public" />
         </>
     )
 }
