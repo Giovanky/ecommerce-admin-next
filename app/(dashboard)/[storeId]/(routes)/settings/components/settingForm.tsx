@@ -18,7 +18,7 @@ import { ApiAlert } from '@/components/ui/apiAlert'
 import axios from 'axios'
 import { useOrigin } from '@/hooks/useOrigin'
 
-interface SettingsFormProps {
+interface SettingFormProps {
     initialData: Store
 }
 
@@ -26,9 +26,9 @@ const formSchema = z.object({
     name: z.string().min(1)
 })
 
-type SettingsFormValues = z.infer<typeof formSchema>
+type SettingFormValues = z.infer<typeof formSchema>
 
-export const SettingsForm: React.FC<SettingsFormProps> = ({
+export const SettingForm: React.FC<SettingFormProps> = ({
     initialData
 }) => {
     const params = useParams()
@@ -38,7 +38,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const onSubmit = async(data: SettingsFormValues) => {
+    const onSubmit = async(data: SettingFormValues) => {
         try{
             setLoading(true)
             await axios.patch(`/api/stores/${params.storeId}`, data)
@@ -66,7 +66,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
         }
     }
 
-    const form = useForm<SettingsFormValues>({
+    const form = useForm<SettingFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData
     })
