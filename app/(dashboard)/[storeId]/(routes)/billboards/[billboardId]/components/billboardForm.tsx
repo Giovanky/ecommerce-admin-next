@@ -4,7 +4,7 @@ import * as z from 'zod'
 import { Button } from "@/components/ui/button"
 import { Heading } from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
-import { Billboard, Store } from "@prisma/client"
+import { Billboard } from "@prisma/client"
 import { Trash } from "lucide-react"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,9 +15,7 @@ import { toast } from 'react-hot-toast'
 import { useParams, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/modals/alertModal'
 import ImageUpload from '@/components/ui/imageUpload'
-import { ApiAlert } from '@/components/ui/apiAlert'
 import axios from 'axios'
-import { useOrigin } from '@/hooks/useOrigin'
 
 interface BillboardFormProps {
     initialData: Billboard | null
@@ -35,7 +33,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 }) => {
     const params = useParams()
     const router = useRouter()
-    const origin = useOrigin()
 
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -136,7 +133,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                 </form>
             </Form>
             <Separator />
-
         </>
     )
 }
